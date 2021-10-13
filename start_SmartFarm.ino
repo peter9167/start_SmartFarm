@@ -19,6 +19,9 @@ int time_count = 0;
 int hum_count = 0;
 int temp_count = 0;
 int light_count = 0;
+int pump_count = 0;
+
+int Pcount = 0;
 
 //------모듈 사용---------
 int pump = 5;
@@ -66,6 +69,12 @@ void loop() {
     light(l);
     light_count = 0;
   }
+
+  //------펌프 출력 카운터-------
+  if(pump_count == 5000){
+    PUMP();
+    pump_count = 0;
+  }
 }
 
 //------------인터럽트를 위한 카운터 호출 함수----------------------
@@ -74,6 +83,7 @@ void timerIsr(){
   hum_count += 1;
   temp_count += 1;
   light_count += 1;
+  pump_count += 1;
 }
 
 void hum(int h){
@@ -106,5 +116,17 @@ void light(int l){
       pixels.show();
       delay(DELAYVAL); // Pause before next pass through loop
     }
+  }
+}
+
+void PUMP(){
+  if(++Pcount >= 10 )
+  {
+    Count1 = 0;
+    digitalWrite(13,HIGH);
+  }
+  else 
+  {
+    digitalWrite(13,LOW);
   }
 }
