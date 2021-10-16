@@ -42,7 +42,7 @@ void setup() {
   pinMode(pump, OUTPUT);
   pinMode(fan, OUTPUT);
   ///////////////////////////////////////////////////////////////
-  Timer1.initialize(1000); //1000000μs = 1s, 1000us = 0.001s, 1000us = 1ms
+  Timer1.initialize(100000); //1000000μs = 1s, 1000us = 0.001s, 1000us = 1ms
   Timer1.attachInterrupt(timerIsr);
 }
 
@@ -53,25 +53,25 @@ void loop() {
   int l = analogRead(A0);
 
   //------습도 값 읽기 카운터-------
-  if(hum_count == 500){
+  if(hum_count == 4){
     hum(h);
     hum_count = 0;
   }
 
   //------온도 값 읽기 카운터-------
-  if(temp_count == 510){
+  if(temp_count == 5){
     temp(t);
     temp_count = 0;
   }
 
   //------조도센서 값 읽기 카운터-------
-  if(light_count == 520){
+  if(light_count == 6){
     light(l);
     light_count = 0;
   }
 
   //------펌프 출력 카운터-------
-  if(pump_count == 5000){
+  if(pump_count == 50){
     PUMP();
     pump_count = 0;
   }
@@ -94,7 +94,7 @@ void hum(int h){
 void temp(int t){
   Serial.print("온도:");
   Serial.println(t); // 온도 값 출력
-  if(t >= 25){
+  if(t >= 26){
     digitalWrite(fan, HIGH);
   } else{
     digitalWrite(fan, LOW);
@@ -122,7 +122,7 @@ void light(int l){
 void PUMP(){
   if(++Pcount >= 10 )
   {
-    Count1 = 0;
+    Pcount = 0;
     digitalWrite(13,HIGH);
   }
   else 
